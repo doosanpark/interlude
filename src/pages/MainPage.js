@@ -21,7 +21,8 @@ function MainPage(props) {
     
     //상황
     let sceneCase = 1;
-    
+    let clickCase = 0;
+
     //마우스 좌표
     let x;
     let y;
@@ -85,7 +86,7 @@ function MainPage(props) {
             bgm.pause();
             bgm.volume = 0.1;
             bgm.loop = true;
-            bgm.play();
+            //bgm.play();
         }
     }
     function setAudioFadeIn() {
@@ -125,10 +126,8 @@ function MainPage(props) {
             initialCnt *= 1.3;
             bgm.volume -= initialCnt;
             setTimeout(setAudioFadeOut, 100);
-            console.log("Aud 0", bgm.volume);
         } else {
             bgm.volume = 0;
-            console.log("Aud 1", bgm.volume);
         }
     }
 
@@ -142,11 +141,14 @@ function MainPage(props) {
         if (opacityValue - initialCnt * 1.3 > 0) {
 
             imgOpacity -= initialCnt;
-            //console.log("imgttttt", opacityValue);
             setTimeout(setImgFadeOut, 100);
         } else {
             keepPlay = false;
-            props.history.push("/surf");
+            if(clickCase === 1)
+                props.history.push("/umbrella");
+            if (clickCase === 2)
+                props.history.push("/surf");
+
             imgOpacity = 0;
         }
 
@@ -216,10 +218,12 @@ function MainPage(props) {
                 if (x > wi*0.65 && x < wi*0.785 && y > he*0.33 && y < he*0.61){
                     setImgFadeOut();
                     setAudioFadeOut();
+                    clickCase = 1;
                 }
                 else if (x > wi*0.65 && x < wi*0.87 && y > he*0.69 && y < he*0.81){
                     setImgFadeOut();
                     setAudioFadeOut();
+                    clickCase = 2;
                 }
                 imgNum = 1;
                 

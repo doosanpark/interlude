@@ -102,6 +102,8 @@ function MainPage(props) {
             setTimeout(setAudioFadeIn, 100);
         } else {
             bgm.volume = 0.4;
+            console.log("volCnt", volCnt);
+
         }
     }
 
@@ -118,6 +120,7 @@ function MainPage(props) {
             setTimeout(setImgFadeIn, 100);
         } else {
             imgOpacity = 1;
+            console.log("imgCnt", imgCnt);
             cursorAction = true;
             // let myWindow = window.open("", "", "width=100, height=100");  // Opens a new window
             // myWindow.resizeTo(1000, 1000);                             // Resizes the new window
@@ -153,9 +156,9 @@ function MainPage(props) {
         } else {
             keepPlay = false;
             if (clickCase === 1)
-                props.history.push("/umbrella");
+                props.history.push("/falling");
             if (clickCase === 2)
-                props.history.push("/surf");
+                props.history.push("/diving");
 
             imgOpacity = 0;
         }

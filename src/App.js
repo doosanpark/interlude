@@ -16,10 +16,11 @@ function App() {
 
   return (
     <div className="App">
-      <Route path={"/surf"} component={Surf}/>
-      <Route path={"/umbrella"} component={Umbrella}/>
-      <Route path={"/main"} component={MainPage}/>
+      <Route path={"/surf"} exact component={Surf} />
+      <Route path={"/umbrella"} exact component={Umbrella} />
+      <Route path={"/"} exact component={MainPage} />
     </div>
+
   );
 }
 

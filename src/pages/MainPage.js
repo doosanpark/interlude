@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import jQuery from "jquery";
+import './MainPage.css';
 window.$ = window.jQuery = jQuery;
 const $ = window.$;
 
@@ -10,15 +11,16 @@ function MainPage(props) {
     let imgArray2 = new Array();
     let imgArray3 = new Array();
     let objImg;
-    let imgOpacity = 0.1;
+    let imgOpacity = 0.01;
     let imgNum = 1;
 
     //오디오
     let bgm = new Audio("");
 
     //페이드 인 아웃 시 카운트
-    let initialCnt = 0.001;
-    
+    let volCnt = 0.0001;
+    let imgCnt = 0.0003;
+
     //상황
     let sceneCase = 1;
     let clickCase = 0;
@@ -28,9 +30,10 @@ function MainPage(props) {
     let y;
     let wi;
     let he;
+    let cursorAction = false;
 
     let keepPlay = true;
-
+    
     function setImage() {
 
         for (let i = 1; i <= 41; i++) {
@@ -42,13 +45,13 @@ function MainPage(props) {
         for (let i = 1; i <= 21; i++) {
             imgArray3[i] = "/images/mainpages/mainpage3/mainpage3 (" + i + ").png";
         }
-    }
 
+    }
 
     function showImage() {
         objImg = document.getElementById("introimg");
         objImg.style.opacity = imgOpacity;
-        switch(sceneCase){
+        switch (sceneCase) {
             case 1:
                 objImg.src = imgArray1[imgNum++];
                 if (imgNum > 41) {
@@ -69,9 +72,9 @@ function MainPage(props) {
                 }
                 break;
         }
-        
-        if(keepPlay){
-            setTimeout(showImage, 60);
+
+        if (keepPlay) {
+            setTimeout(showImage, 58);
         }
     }
 
@@ -81,22 +84,24 @@ function MainPage(props) {
         if (!bgm.canPlayType('audio/ogg')) alert('브라우저가 ogg 재생을 지원하지 않습니다.');
         else {
             let bgm_url = 'http://upload.wikimedia.org/wikipedia/commons/d/d7/Wikinews_Remix_Jingle.ogg';
-            
             bgm = new Audio(bgm_url);
             bgm.pause();
             bgm.volume = 0.1;
             bgm.loop = true;
-            //bgm.play();
+            bgm.muted = true;
+            bgm.play();
         }
     }
+
     function setAudioFadeIn() {
         //오디오
-        if (initialCnt * 1.3 + bgm.volume < 1) {
-            initialCnt *= 1.3;
-            bgm.volume += initialCnt;
+        if (volCnt * 1.1 + bgm.volume < 0.4) {
+
+            volCnt *= 1.1;
+            bgm.volume += volCnt;
             setTimeout(setAudioFadeIn, 100);
         } else {
-            bgm.volume = 1;
+            bgm.volume = 0.4;
         }
     }
 
@@ -106,25 +111,28 @@ function MainPage(props) {
         opacityValue *= 1;
 
         //투명도
-        if (initialCnt * 1.3 + opacityValue < 1) {
-
-            imgOpacity += initialCnt;
+        if (imgCnt * 1.3 + opacityValue < 1) {
+            imgCnt *= 1.1;
+            imgOpacity += imgCnt;
 
             setTimeout(setImgFadeIn, 100);
         } else {
-
             imgOpacity = 1;
-            
+            cursorAction = true;
+            // let myWindow = window.open("", "", "width=100, height=100");  // Opens a new window
+            // myWindow.resizeTo(1000, 1000);                             // Resizes the new window
+            // myWindow.focus();                                        // Sets focus to the new window
+
         }
 
     }
-    
+
     function setAudioFadeOut() {
 
         //오디오
-        if (bgm.volume - initialCnt * 1.3 > 0) {
-            initialCnt *= 1.3;
-            bgm.volume -= initialCnt;
+        if (bgm.volume - volCnt * 1.1 > 0) {
+            volCnt *= 1.1;
+            bgm.volume -= volCnt;
             setTimeout(setAudioFadeOut, 100);
         } else {
             bgm.volume = 0;
@@ -138,13 +146,13 @@ function MainPage(props) {
         opacityValue *= 1;
 
         //투명도
-        if (opacityValue - initialCnt * 1.3 > 0) {
+        if (opacityValue - imgCnt > 0) {
 
-            imgOpacity -= initialCnt;
+            imgOpacity -= imgCnt;
             setTimeout(setImgFadeOut, 100);
         } else {
             keepPlay = false;
-            if(clickCase === 1)
+            if (clickCase === 1)
                 props.history.push("/umbrella");
             if (clickCase === 2)
                 props.history.push("/surf");
@@ -156,80 +164,85 @@ function MainPage(props) {
 
     function mouseEvent() {
         //마우스 커서 이벤트
-        
+
         $(document).mousemove(function (e) {
 
             x = e.pageX;
             y = e.pageY;
             wi = objImg.clientWidth;
             he = document.body.clientHeight;
-            
-            x *=1;
-            y *= 1;
-            wi *=1;
-            he *=1;
 
-            x -= (document.body.clientWidth - objImg.clientWidth)/2
-            
-            switch (sceneCase) {
-                case 1:
-                    if (x > wi*0.51 && x < wi*0.59 && y > he*0.37 && y < he*0.52)
-                        $('body').css('cursor', 'pointer');
-                    else {
-                        $('body').css('cursor', 'default');
-                    }
-                    break;
+            x *= 1;
+            y *= 1;
+            wi *= 1;
+            he *= 1;
+
+            x -= (document.body.clientWidth - objImg.clientWidth) / 2
+            if (cursorAction) {
+                switch (sceneCase) {
+                    case 1:
+                        if (x > wi * 0.51 && x < wi * 0.59 && y > he * 0.37 && y < he * 0.52)
+                            $('body').css('cursor', 'pointer');
+                        else {
+                            $('body').css('cursor', 'default');
+                        }
+                        break;
                     case 2:
                         $('body').css('cursor', 'default');
                         break;
-                
-                case 3:
-                    if (x > wi*0.65 && x < wi*0.785 && y > he*0.33 && y < he*0.61){
-                        $('body').css('cursor', 'pointer');
-                    }
-                    else if (x > wi*0.65 && x < wi*0.87 && y > he*0.69 && y < he*0.81){
-                        $('body').css('cursor', 'pointer');
-                    }
-                    else {
-                        $('body').css('cursor', 'default');
-                    }
-                    break;
-            }
 
+                    case 3:
+                        if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
+                            $('body').css('cursor', 'pointer');
+                        }
+                        else if (x > wi * 0.65 && x < wi * 0.87 && y > he * 0.69 && y < he * 0.81) {
+                            $('body').css('cursor', 'pointer');
+                        }
+                        else {
+                            $('body').css('cursor', 'default');
+                        }
+                        break;
+                }
+            }
 
         });
     }
 
-    function imgClickEvent(){
-        switch (sceneCase) {
-            case 1:
-                if (x > wi*0.51 && x < wi*0.59 && y > he*0.37 && y < he*0.52){
-                   sceneCase++;
-                }
-                imgNum = 1;
-                break;
-            case 2:
-                    if (x > wi-60 && x < wi+40 && y > he - 80 && y < he + 85){
-                       
+    function imgClickEvent() {
+        if (cursorAction) {
+            switch (sceneCase) {
+                case 1:
+                    if (x > wi * 0.51 && x < wi * 0.59 && y > he * 0.37 && y < he * 0.52) {
+                        sceneCase++;
+
+                    }
+                    imgNum = 1;
+                    break;
+                case 2:
+                    if (x > wi - 60 && x < wi + 40 && y > he - 80 && y < he + 85) {
+
                     }
                     break;
-            case 3:
-                initialCnt = 0.001;
-                if (x > wi*0.65 && x < wi*0.785 && y > he*0.33 && y < he*0.61){
-                    setImgFadeOut();
-                    setAudioFadeOut();
-                    clickCase = 1;
-                }
-                else if (x > wi*0.65 && x < wi*0.87 && y > he*0.69 && y < he*0.81){
-                    setImgFadeOut();
-                    setAudioFadeOut();
-                    clickCase = 2;
-                }
-                imgNum = 1;
-                
-                break;
+                case 3:
+                    volCnt = 0.001;
+                    imgCnt = 0.03;
+                    if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
+                        setImgFadeOut();
+                        setAudioFadeOut();
+                        clickCase = 1;
+                    }
+                    else if (x > wi * 0.65 && x < wi * 0.87 && y > he * 0.69 && y < he * 0.81) {
+                        setImgFadeOut();
+                        setAudioFadeOut();
+                        clickCase = 2;
+                    }
+                    imgNum = 1;
+
+                    break;
+            }
         }
-        
+        $('body').css('cursor', 'default');
+
     }
 
     useEffect(() => {
@@ -243,10 +256,10 @@ function MainPage(props) {
     })
 
     return (
-        <div className="App">
-
+        <div className="body">
             <img id="introimg" style={{ opacity: '0.1' }} onClick={imgClickEvent} />
         </div>
+
     );
 }
 

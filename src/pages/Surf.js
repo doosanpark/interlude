@@ -144,7 +144,7 @@ function Surf(props) {
   })
 
   return (
-    <div className="App">
+    <div className="body">
 
       <img id="introimg" style={{opacity:'0.1'}} />
     </div>

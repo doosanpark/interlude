@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import jQuery from "jquery";
+import './MainPage.css'
 window.$ = window.jQuery = jQuery;
 const $ = window.$;
 
@@ -22,21 +23,23 @@ function Umbrella(props) {
     }
   }
 
+
   function showImage() {
     objImg = document.getElementById("introimg");
     objImg.style.opacity = imgOpacity;
     objImg.src = imgArray[imgNum++];
 
-    if (imgNum == 465) {
+    if (imgNum == 475) {
       setAudioFadeOut();
       setImgFadeOut();
     }
+    //80 -> 67
     if(imgNum >=532){
       keepPlay = false;
-      props.history.push("/main");
+      props.history.push("/");
     }
     if(keepPlay){
-      setTimeout(showImage, 80);
+      setTimeout(showImage, 60);
     }
   }
 
@@ -49,7 +52,7 @@ function Umbrella(props) {
       bgm = new Audio(bgm_url);
       bgm.volume = 0;
       bgm.loop = true;
-      bgm.play();
+      //bgm.play();
 
     }
   }
@@ -152,7 +155,7 @@ function Umbrella(props) {
   })
 
   return (
-    <div className="App">
+    <div className="body">
 
       <img id="introimg" style={{ opacity: '0.1' }} />
     </div>

@@ -1,6 +1,10 @@
 
 .body{
     background-color:white;
+    display:inline-block;
+    clear:both;
+    width: auto;
+    height: 100%;
   }
 
 img{

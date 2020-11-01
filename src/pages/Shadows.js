@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import jQuery from "jquery";
+import './MainPage.css'
 window.$ = window.jQuery = jQuery;
 const $ = window.$;
 
-function Surf(props) { 
+function Shadows(props) {
 
   let imgArray = new Array();
   let bgm = new Audio('');
@@ -17,23 +18,25 @@ function Surf(props) {
   let imgCnt = 0.0003;
   function setImage() {
 
-    for (let i = 1; i <= 223; i++) {
-      imgArray[i] = "/images/test/surf (" + i + ").png";
+    for (let i = 1; i <= 532; i++) {
+      imgArray[i] = "/images/umbrella/umbrella (" + i + ").png";
     }
   }
+
 
   function showImage() {
     objImg = document.getElementById("introimg");
     objImg.style.opacity = imgOpacity;
     objImg.src = imgArray[imgNum++];
 
-    if (imgNum == 140) {
+    if (imgNum == 455) {
       setAudioFadeOut();
       setImgFadeOut();
     }
 
-    //60 -> 455 (-77)
-    if (imgNum >= 223) {
+    //80 -> 467
+    //60 -> 455
+    if (imgNum >= 530) {
       keepPlay = false;
       props.history.push("/");
     }
@@ -68,6 +71,8 @@ function Surf(props) {
     }
   }
 
+
+
   function setImgFadeIn() {
 
     let opacityValue = objImg.style.opacity;
@@ -88,7 +93,9 @@ function Surf(props) {
       // myWindow.focus();                                        // Sets focus to the new window
 
     }
+
   }
+
 
   function setAudioFadeOut() {
 
@@ -96,11 +103,12 @@ function Surf(props) {
     if (bgm.volume - volCnt * 1.1 > 0) {
       volCnt *= 1.1;
       bgm.volume -= volCnt;
-      setTimeout(setAudioFadeOut, 50);
+      setTimeout(setAudioFadeOut, 100);
     } else {
       bgm.volume = 0;
     }
   }
+
 
   function setImgFadeOut() {
     let opacityValue = imgOpacity;
@@ -110,12 +118,14 @@ function Surf(props) {
     if (opacityValue - imgCnt > 0) {
 
       imgOpacity -= imgCnt;
-      setTimeout(setImgFadeOut, 50);
+      setTimeout(setImgFadeOut, 100);
     } else {
       imgOpacity = 0;
     }
 
   }
+
+
 
   function mouseEvent() {
     //마우스 커서 이벤트
@@ -149,10 +159,10 @@ function Surf(props) {
 
   })
 
-
   return (
+
     <img id="introimg" style={{ opacity: '0.1' }} />
   );
 }
 
-export default Surf;
+export default Shadows;

@@ -1,44 +1,43 @@
 import React, { useEffect } from 'react';
 import jQuery from "jquery";
-import './MainPage.css'
 window.$ = window.jQuery = jQuery;
 const $ = window.$;
 
-function Umbrella(props) {
+function LastPage(props) { 
 
   let imgArray = new Array();
   let bgm = new Audio('');
   let imgNum = 1;
-  let initialCnt = 0.001;
   let objImg;
   let imgOpacity = 0;
   let keepPlay = true;
 
-  let volcnt = 0;
-  let imgcnt = 0;
+  //페이드 인 아웃 시 카운트
+  let volCnt = 0.0001;
+  let imgCnt = 0.0003;
   function setImage() {
 
-    for (let i = 1; i <= 532; i++) {
-      imgArray[i] = "/images/umbrella/umbrella (" + i + ").png";
+    for (let i = 1; i <= 155; i++) {
+      imgArray[i] = "/images/surf/surf (" + i + ").png";
     }
   }
-
 
   function showImage() {
     objImg = document.getElementById("introimg");
     objImg.style.opacity = imgOpacity;
     objImg.src = imgArray[imgNum++];
 
-    if (imgNum == 475) {
+    if (imgNum == 78) {
       setAudioFadeOut();
       setImgFadeOut();
     }
-    //80 -> 67
-    if(imgNum >=532){
+
+    //60 -> 455 (-77)
+    if (imgNum >= 180) {
       keepPlay = false;
       props.history.push("/");
     }
-    if(keepPlay){
+    if (keepPlay) {
       setTimeout(showImage, 60);
     }
   }
@@ -57,18 +56,17 @@ function Umbrella(props) {
     }
   }
   function setAudioFadeIn() {
-
     //오디오
-    if (initialCnt * 1.3 + bgm.volume < 1) {
-      initialCnt *= 1.3;
-      bgm.volume += initialCnt;
-      setTimeout(setAudioFadeIn, 150);
+    if (volCnt * 1.1 + bgm.volume < 0.4) {
+
+      volCnt *= 1.1;
+      bgm.volume += volCnt;
+      setTimeout(setAudioFadeIn, 100);
     } else {
-      bgm.volume = 1;
+      bgm.volume = 0.4;
+
     }
   }
-
-
 
   function setImgFadeIn() {
 
@@ -76,51 +74,48 @@ function Umbrella(props) {
     opacityValue *= 1;
 
     //투명도
-    if (initialCnt * 1.3 + opacityValue < 1) {
+    if (imgCnt * 1.3 + opacityValue < 1) {
+      imgCnt *= 1.1;
+      imgOpacity += imgCnt;
 
-      imgOpacity += initialCnt;
-
-      setTimeout(setImgFadeIn, 200);
+      setTimeout(setImgFadeIn, 100);
     } else {
-
       imgOpacity = 1;
-      initialCnt = 0.001;
+      volCnt = 0.001;
+      imgCnt = 0.03;
+      // let myWindow = window.open("", "", "width=100, height=100");  // Opens a new window
+      // myWindow.resizeTo(1000, 1000);                             // Resizes the new window
+      // myWindow.focus();                                        // Sets focus to the new window
+
     }
-
   }
-
 
   function setAudioFadeOut() {
 
     //오디오
-    if (bgm.volume - initialCnt * 1.2 > 0) {
-      volcnt++;
-      initialCnt *= 1.2;
-      bgm.volume -= initialCnt;
-      setTimeout(setAudioFadeOut, 150);
+    if (bgm.volume - volCnt * 1.1 > 0) {
+      volCnt *= 1.1;
+      bgm.volume -= volCnt;
+      setTimeout(setAudioFadeOut, 100);
     } else {
       bgm.volume = 0;
     }
   }
 
-
   function setImgFadeOut() {
-
     let opacityValue = imgOpacity;
     opacityValue *= 1;
 
     //투명도
-    if (opacityValue - initialCnt * 1.2 > 0) {
-      imgcnt++;
-      imgOpacity -= initialCnt;
-      setTimeout(setImgFadeOut, 150);
+    if (opacityValue - imgCnt > 0) {
+
+      imgOpacity -= imgCnt;
+      setTimeout(setImgFadeOut, 100);
     } else {
       imgOpacity = 0;
     }
 
   }
-
-
 
   function mouseEvent() {
     //마우스 커서 이벤트
@@ -154,12 +149,10 @@ function Umbrella(props) {
 
   })
 
-  return (
-    <div className="body">
 
-      <img id="introimg" style={{ opacity: '0.1' }} />
-    </div>
+  return (
+    <img id="introimg" style={{ opacity: '0.1' }} />
   );
 }
 
-export default Umbrella;
+export default LastPage;

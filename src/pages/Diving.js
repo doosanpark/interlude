@@ -33,7 +33,43 @@ function Diving(props) {
     let cursorAction = false;
 
     let keepPlay = true;
+
+    let secCnt = 58;
+    let cntHowMany = 1;
+    let scrollCase = 0;
     
+    if (window.addEventListener)
+        window.addEventListener('DOMMouseScroll', wheel, false);
+    window.onmousewheel = document.onmousewheel = wheel;
+
+
+
+    // 마우스 휠~
+    function handle(delta) {
+        var s = delta + ": ";
+        secCnt = 30;
+        cntHowMany = 0;
+        if (delta < 0) {
+            scrollCase = 1;
+        }
+        else {
+            scrollCase = 2;
+        }
+    }
+
+    //마우스 이벤트
+    function wheel(event) {
+        var delta = 0;
+        if (!event) event = window.event;
+        if (event.wheelDelta) {
+            delta = event.wheelDelta / 120;
+            if (window.opera) delta = -delta;
+        } else if (event.detail) delta = -event.detail / 3;
+        if (delta) handle(delta);
+    }
+ 
+
+
     function setImage() {
 
         for (let i = 1; i <= 18; i++) {
@@ -42,7 +78,7 @@ function Diving(props) {
         for (let i = 1; i <= 26; i++) {
             imgArray2[i] = "/images/dive_into_shadow/dive_into_shadow2/dive_into_shadow2 (" + i + ").png";
         }
-        for (let i = 1; i <= 2473; i++) {
+        for (let i = 1; i <= 2505; i++) {
             imgArray3[i] = "/images/diving/diving (" + i + ").png";
         }
 
@@ -66,15 +102,41 @@ function Diving(props) {
                 }
                 break;
             case 3:
-                objImg.src = imgArray3[imgNum++];
-                if (imgNum > 2473) {
-                    imgNum = 1;
+                if (secCnt < 300 && imgNum < 2298) {
+                    if (scrollCase == 1)
+                        objImg.src = imgArray3[imgNum++];
+                    if (scrollCase == 2) {
+                        objImg.src = imgArray3[imgNum--];
+                        if (imgNum <= 0) {
+                            imgNum = 1;
+                        }
+                    }
+                    
+                    
+                        secCnt *= 1.1;
+                    cntHowMany++;
                 }
+                if(imgNum >= 2298){
+                    objImg.src = imgArray3[imgNum++];
+                    if (imgNum == 2400) {
+                        volCnt = 0.001;
+                        imgCnt = 0.03;
+
+                        setAudioFadeOut();
+                        setImgFadeOut();
+                    }
+                    if (imgNum > 2490) {
+                        imgNum = 1;
+                        keepPlay = false;
+                        props.history.push("/calm");
+                    }
+                }
+               
                 break;
         }
 
         if (keepPlay) {
-            setTimeout(showImage, 58);
+            setTimeout(showImage, secCnt);
         }
     }
 
@@ -141,26 +203,19 @@ function Diving(props) {
 
 
     function setImgFadeOut() {
-
         let opacityValue = imgOpacity;
         opacityValue *= 1;
 
         //투명도
         if (opacityValue - imgCnt > 0) {
-
             imgOpacity -= imgCnt;
             setTimeout(setImgFadeOut, 100);
         } else {
-            keepPlay = false;
-            if (clickCase === 1)
-                props.history.push("/umbrella");
-            if (clickCase === 2)
-                props.history.push("/surf");
-
             imgOpacity = 0;
         }
 
     }
+
 
     function mouseEvent() {
         //마우스 커서 이벤트
@@ -187,21 +242,7 @@ function Diving(props) {
                             $('body').css('cursor', 'default');
                         }
                         break;
-                    case 2:
-                        $('body').css('cursor', 'default');
-                        break;
-
-                    case 3:
-                        if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
-                            $('body').css('cursor', 'pointer');
-                        }
-                        else if (x > wi * 0.65 && x < wi * 0.87 && y > he * 0.69 && y < he * 0.81) {
-                            $('body').css('cursor', 'pointer');
-                        }
-                        else {
-                            $('body').css('cursor', 'default');
-                        }
-                        break;
+                    
                 }
             }
 
@@ -214,31 +255,11 @@ function Diving(props) {
                 case 1:
                     if (x > wi * 0.51 && x < wi * 0.59 && y > he * 0.37 && y < he * 0.52) {
                         sceneCase++;
-
-                    }
-                    imgNum = 1;
-                    break;
-                case 2:
-                    if (x > wi - 60 && x < wi + 40 && y > he - 80 && y < he + 85) {
-
+                        
                     }
                     break;
-                case 3:
-                    volCnt = 0.001;
-                    imgCnt = 0.03;
-                    if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
-                        setImgFadeOut();
-                        setAudioFadeOut();
-                        clickCase = 1;
-                    }
-                    else if (x > wi * 0.65 && x < wi * 0.87 && y > he * 0.69 && y < he * 0.81) {
-                        setImgFadeOut();
-                        setAudioFadeOut();
-                        clickCase = 2;
-                    }
-                    imgNum = 1;
-
-                    break;
+               
+                
             }
         }
         $('body').css('cursor', 'default');
@@ -256,9 +277,7 @@ function Diving(props) {
     })
 
     return (
-        <div className="body">
             <img id="introimg" style={{ opacity: '0.1' }} onClick={imgClickEvent} />
-        </div>
 
     );
 }

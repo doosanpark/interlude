@@ -4,12 +4,11 @@ import './MainPage.css';
 window.$ = window.jQuery = jQuery;
 const $ = window.$;
 
-function MainPage(props) {
+function CalmBeforeStorm(props) {
 
     //이미지
     let imgArray1 = new Array();
     let imgArray2 = new Array();
-    let imgArray3 = new Array();
     let objImg;
     let imgOpacity = 0.01;
     let imgNum = 1;
@@ -36,14 +35,11 @@ function MainPage(props) {
     
     function setImage() {
 
-        for (let i = 1; i <= 41; i++) {
-            imgArray1[i] = "/images/mainpages/mainpage1/mainpage1 (" + i + ").png";
+        for (let i = 1; i <= 56; i++) {
+            imgArray1[i] = "/images/calm/calm1/calm1 (" + i + ").png";
         }
-        for (let i = 1; i <= 46; i++) {
-            imgArray2[i] = "/images/mainpages/mainpage2/mainpage2 (" + i + ").png";
-        }
-        for (let i = 1; i <= 21; i++) {
-            imgArray3[i] = "/images/mainpages/mainpage3/mainpage3 (" + i + ").png";
+        for (let i = 1; i <= 276; i++) {
+            imgArray2[i] = "/images/calm/calm2/calm2 (" + i + ").png";
         }
 
     }
@@ -54,23 +50,24 @@ function MainPage(props) {
         switch (sceneCase) {
             case 1:
                 objImg.src = imgArray1[imgNum++];
-                if (imgNum > 41) {
+                if (imgNum > 56) {
                     imgNum = 1;
                 }
                 break;
             case 2:
                 objImg.src = imgArray2[imgNum++];
-                if (imgNum == 46) {
-                    imgNum = 1;
-                    sceneCase++;
+                if (imgNum == 200) {
+                    setAudioFadeOut();
+                    setImgFadeOut();
+                }
+
+                //60s -> 455 (-77)
+                if (imgNum >= 265) {
+                    keepPlay = false;
+                    props.history.push("/surf");
                 }
                 break;
-            case 3:
-                objImg.src = imgArray3[imgNum++];
-                if (imgNum > 21) {
-                    imgNum = 1;
-                }
-                break;
+            
         }
 
         if (keepPlay) {
@@ -120,6 +117,8 @@ function MainPage(props) {
         } else {
             imgOpacity = 1;
             cursorAction = true;
+            volCnt = 0.001;
+            imgCnt = 0.03;
             // let myWindow = window.open("", "", "width=100, height=100");  // Opens a new window
             // myWindow.resizeTo(1000, 1000);                             // Resizes the new window
             // myWindow.focus();                                        // Sets focus to the new window
@@ -129,38 +128,33 @@ function MainPage(props) {
     }
 
     function setAudioFadeOut() {
-    
+
         //오디오
         if (bgm.volume - volCnt * 1.1 > 0) {
-            volCnt *= 1.1;
-            bgm.volume -= volCnt;
-            setTimeout(setAudioFadeOut, 100);
+          volCnt *= 1.1;
+          bgm.volume -= volCnt;
+          setTimeout(setAudioFadeOut, 50);
         } else {
-            bgm.volume = 0;
+          bgm.volume = 0;
         }
-    }
-
-    function setImgFadeOut() {
-
+      }
+    
+    
+      function setImgFadeOut() {
         let opacityValue = imgOpacity;
         opacityValue *= 1;
-
+    
         //투명도
         if (opacityValue - imgCnt > 0) {
-
-            imgOpacity -= imgCnt;
-            setTimeout(setImgFadeOut, 100);
+    
+          imgOpacity -= imgCnt;
+          setTimeout(setImgFadeOut, 50);
         } else {
-            keepPlay = false;
-            if (clickCase === 1)
-                props.history.push("/falling");
-            if (clickCase === 2)
-                props.history.push("/diving");
-
-            imgOpacity = 0;
+          imgOpacity = 0;
         }
-
-    }
+    
+      }
+    
 
     function mouseEvent() {
         //마우스 커서 이벤트
@@ -181,24 +175,9 @@ function MainPage(props) {
             if (cursorAction) {
                 switch (sceneCase) {
                     case 1:
-                        if (x > wi * 0.51 && x < wi * 0.59 && y > he * 0.37 && y < he * 0.52)
+                        if (x > wi * 0.41 && x < wi * 0.46 && y > he * 0.3 && y < he * 0.67){
                             $('body').css('cursor', 'pointer');
-                        else {
-                            $('body').css('cursor', 'default');
-                        }
-                        break;
-                    case 2:
-                        $('body').css('cursor', 'default');
-                        break;
-
-                    case 3:
-                        if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
-                            $('body').css('cursor', 'pointer');
-                        }
-                        else if (x > wi * 0.65 && x < wi * 0.87 && y > he * 0.69 && y < he * 0.81) {
-                            $('body').css('cursor', 'pointer');
-                        }
-                        else {
+                        } else {
                             $('body').css('cursor', 'default');
                         }
                         break;
@@ -212,18 +191,14 @@ function MainPage(props) {
         if (cursorAction) {
             switch (sceneCase) {
                 case 1:
-                    if (x > wi * 0.51 && x < wi * 0.59 && y > he * 0.37 && y < he * 0.52) {
+                    if (x > wi * 0.41 && x < wi * 0.46 && y > he * 0.3 && y < he * 0.67){
                         sceneCase++;
 
                     }
                     imgNum = 1;
                     break;
+               
                 case 2:
-                    if (x > wi - 60 && x < wi + 40 && y > he - 80 && y < he + 85) {
-
-                    }
-                    break;
-                case 3:
                     volCnt = 0.001;
                     imgCnt = 0.03;
                     if (x > wi * 0.65 && x < wi * 0.785 && y > he * 0.33 && y < he * 0.61) {
@@ -261,4 +236,4 @@ function MainPage(props) {
     );
 }
 
-export default MainPage;
+export default CalmBeforeStorm;

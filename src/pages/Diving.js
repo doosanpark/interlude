@@ -47,7 +47,7 @@ function Diving(props) {
     // 마우스 휠~
     function handle(delta) {
         var s = delta + ": ";
-        secCnt = 30;
+        secCnt = 58;
         cntHowMany = 0;
         if (delta < 0) {
             scrollCase = 1;
@@ -79,9 +79,9 @@ function Diving(props) {
             imgArray2[i] = "/images/dive_into_shadow/dive_into_shadow2/dive_into_shadow2 (" + i + ").png";
         }
         for (let i = 1; i <= 2505; i++) {
-            imgArray3[i] = "/images/diving/diving (" + i + ").png";
+            imgArray3[i] = "/images/endless_diving/diving (" + i + ").png";
         }
-
+        showImage();
     }
 
     function showImage() {
@@ -98,23 +98,31 @@ function Diving(props) {
                 objImg.src = imgArray2[imgNum++];
                 if (imgNum == 26) {
                     imgNum = 1;
+                    secCnt = 58;
                     sceneCase++;
                 }
                 break;
             case 3:
-                if (secCnt < 300 && imgNum < 2298) {
-                    if (scrollCase == 1)
+                if (secCnt < 500 && imgNum < 2298) {
+                    if (scrollCase == 0){
                         objImg.src = imgArray3[imgNum++];
-                    if (scrollCase == 2) {
-                        objImg.src = imgArray3[imgNum--];
-                        if (imgNum <= 0) {
-                            imgNum = 1;
+                        if(cntHowMany == 50){
+                            scrollCase++;
                         }
-                    }
-                    
-                    
+
+                    } else {
+                        if (scrollCase == 1)
+                            objImg.src = imgArray3[imgNum++];
+                        if (scrollCase == 2) {
+                            objImg.src = imgArray3[imgNum--];
+                            if (imgNum <= 0) {
+                                imgNum = 1;
+                            }
+                        }
                         secCnt *= 1.1;
+                    }
                     cntHowMany++;
+
                 }
                 if(imgNum >= 2298){
                     objImg.src = imgArray3[imgNum++];
@@ -268,7 +276,6 @@ function Diving(props) {
 
     useEffect(() => {
         setImage();
-        showImage();
         mouseEvent();
         setAudio();
         setImgFadeIn();

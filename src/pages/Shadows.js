@@ -21,6 +21,7 @@ function Shadows(props) {
     for (let i = 1; i <= 532; i++) {
       imgArray[i] = "/images/umbrella/umbrella (" + i + ").png";
     }
+    showImage();
   }
 
 
@@ -151,7 +152,6 @@ function Shadows(props) {
 
   useEffect(() => {
     setImage();
-    showImage();
     mouseEvent();
     setAudio();
     setImgFadeIn();

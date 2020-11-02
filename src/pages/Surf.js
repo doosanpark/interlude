@@ -18,8 +18,9 @@ function Surf(props) {
   function setImage() {
 
     for (let i = 1; i <= 223; i++) {
-      imgArray[i] = "/images/test/surf (" + i + ").png";
+      imgArray[i] = "/images/surf/surf (" + i + ").png";
     }
+    showImage();
   }
 
   function showImage() {
@@ -141,7 +142,6 @@ function Surf(props) {
 
   useEffect(() => {
     setImage();
-    showImage();
     mouseEvent();
     setAudio();
     setImgFadeIn();

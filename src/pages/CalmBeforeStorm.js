@@ -36,12 +36,12 @@ function CalmBeforeStorm(props) {
     function setImage() {
 
         for (let i = 1; i <= 56; i++) {
-            imgArray1[i] = "/images/calm/calm1/calm1 (" + i + ").png";
+            imgArray1[i] = "/images/calm_before_the_storm/calm1/calm1 (" + i + ").png";
         }
         for (let i = 1; i <= 276; i++) {
-            imgArray2[i] = "/images/calm/calm2/calm2 (" + i + ").png";
+            imgArray2[i] = "/images/calm_before_the_storm/calm2/calm2 (" + i + ").png";
         }
-
+        showImage();
     }
 
     function showImage() {
@@ -211,8 +211,6 @@ function CalmBeforeStorm(props) {
                         setAudioFadeOut();
                         clickCase = 2;
                     }
-                    imgNum = 1;
-
                     break;
             }
         }
@@ -222,7 +220,7 @@ function CalmBeforeStorm(props) {
 
     useEffect(() => {
         setImage();
-        showImage();
+        
         mouseEvent();
         setAudio();
         setImgFadeIn();

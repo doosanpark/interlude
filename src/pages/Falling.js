@@ -19,8 +19,9 @@ function Falling(props) {
   function setImage() {
 
     for (let i = 1; i <= 532; i++) {
-      imgArray[i] = "/images/umbrella/umbrella (" + i + ").png";
+      imgArray[i] = "/images/falling/umbrella (" + i + ").png";
     }
+    showImage();
   }
 
   function showImage() {
@@ -145,7 +146,6 @@ function Falling(props) {
 
   useEffect(() => {
     setImage();
-    showImage();
     mouseEvent();
     setAudio();
     setImgFadeIn();

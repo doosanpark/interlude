@@ -7,13 +7,13 @@ const $ = window.$;
 function MainPage(props) {
 
     //이미지
-    let imgArray1 = new Array();
-    let imgArray2 = new Array();
-    let imgArray3 = new Array();
+    let mainPageArray1 = new Array();
+    let mainPageArray2 = new Array();
+    let mainPageArray3 = new Array();
     let objImg;
     let imgOpacity = 0.01;
     let imgNum = 1;
-
+    
     //오디오
     let bgm = new Audio("");
 
@@ -37,15 +37,16 @@ function MainPage(props) {
     function setImage() {
 
         for (let i = 1; i <= 41; i++) {
-            imgArray1[i] = "/images/mainpages/mainpage1/mainpage1 (" + i + ").png";
+            mainPageArray1[i] = "/images/on_and_off/mainpage1/mainpage1 (" + i + ").png";
         }
         for (let i = 1; i <= 46; i++) {
-            imgArray2[i] = "/images/mainpages/mainpage2/mainpage2 (" + i + ").png";
+            mainPageArray2[i] = "/images/on_and_off/mainpage2/mainpage2 (" + i + ").png";
         }
         for (let i = 1; i <= 21; i++) {
-            imgArray3[i] = "/images/mainpages/mainpage3/mainpage3 (" + i + ").png";
+            mainPageArray3[i] = "/images/on_and_off/mainpage3/mainpage3 (" + i + ").png";
         }
 
+        showImage();
     }
 
     function showImage() {
@@ -53,20 +54,20 @@ function MainPage(props) {
         objImg.style.opacity = imgOpacity;
         switch (sceneCase) {
             case 1:
-                objImg.src = imgArray1[imgNum++];
+                objImg.src = mainPageArray1[imgNum++];
                 if (imgNum > 41) {
                     imgNum = 1;
                 }
                 break;
             case 2:
-                objImg.src = imgArray2[imgNum++];
+                objImg.src = mainPageArray2[imgNum++];
                 if (imgNum == 46) {
                     imgNum = 1;
                     sceneCase++;
                 }
                 break;
             case 3:
-                objImg.src = imgArray3[imgNum++];
+                objImg.src = mainPageArray3[imgNum++];
                 if (imgNum > 21) {
                     imgNum = 1;
                 }
@@ -152,6 +153,8 @@ function MainPage(props) {
             setTimeout(setImgFadeOut, 100);
         } else {
             keepPlay = false;
+            sceneCase++;
+
             if (clickCase === 1)
                 props.history.push("/falling");
             if (clickCase === 2)
@@ -247,7 +250,6 @@ function MainPage(props) {
 
     useEffect(() => {
         setImage();
-        showImage();
         mouseEvent();
         setAudio();
         setImgFadeIn();
@@ -256,7 +258,7 @@ function MainPage(props) {
     })
 
     return (
-            <img id="introimg" style={{ opacity: '0.1' }} onClick={imgClickEvent} />
+        <img id="introimg" style={{ opacity: '0.1' }} onClick={imgClickEvent} />
 
     );
 }
